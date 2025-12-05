@@ -168,6 +168,26 @@ export default function App() {
             setOrders={setOrders}
           />
         )}
+
+        {page === "login" && (
+    <Login
+      onSuccess={userData => {
+        setUser(userData);
+        setPage("catalog");
+      }}
+      onBack={() => setPage("catalog")}
+    />
+  )}
+
+  {page === "register" && (
+    <Register
+      onSuccess={userData => {
+        setUser(userData);
+        setPage("catalog");
+      }}
+      onBack={() => setPage("catalog")}
+    />
+  )}
       </main>
       <footer className="footer">
         Simple frontend demo for Vite + React

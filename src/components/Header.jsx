@@ -40,14 +40,10 @@ export default function Header({ cartCount, onNavigate, onSearch, user, setUser 
             Корзина ({cartCount})
           </div>
 
-          {user && user.uid !== 'guest' ? (
-            <div className="flex-gap">
-              <span>{user.name}</span>
-              <button className="button-danger" onClick={logout}>Выйти</button>
-            </div>
-          ) : (
-            <AuthButtons setUser={setUser} />
-          )}
+          <AuthButtons
+  goToLogin={() => setPage("login")}
+  goToRegister={() => setPage("register")}
+/>
         </div>
       </div>
 
