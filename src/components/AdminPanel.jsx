@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import AdminUsers from "./AdminUsers.jsx";
 
-export default function AdminPanel({ isAdmin, products, createProduct, editProduct, deleteProduct, orders, setOrders }) {
+export default function AdminPanel({ isAdmin, products, createProduct, editProduct, deleteProduct, orders, setOrders, user }) {
   const [form, setForm] = useState({ title: '', price: 0, category: 'men' });
 
   if (!isAdmin) return <div className="text-large text-bold" style={{ color: '#ef4444' }}>Доступ запрещён</div>;
@@ -69,6 +70,7 @@ export default function AdminPanel({ isAdmin, products, createProduct, editProdu
           ))}
         </div>
       </div>
+      <AdminUsers currentUser={user} />
     </div>
   );
 }
