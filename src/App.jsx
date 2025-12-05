@@ -201,7 +201,7 @@ export default function App() {
         )}
       </main>
       <footer className="footer">
-        Simple frontend demo for Vite + React
+        ryskeldimyrzaliev20@icloud.com
       </footer>
       <ProductModal product={selected} onClose={() => setSelected(null)} onAdd={addToCart} />
       <Toast message={toast} onClose={() => setToast('')} />

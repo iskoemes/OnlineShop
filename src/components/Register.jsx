@@ -16,7 +16,6 @@ export default function Register({ onSuccess, onBack }) {
             setEmail("");
             setPassword("");
 
-            // переходим на страницу логина
             if (onSuccess) onSuccess();
         } catch (err) {
             console.error("REGISTER ERROR:", err.code, err.message);
@@ -34,45 +33,45 @@ export default function Register({ onSuccess, onBack }) {
     };
 
     return (
-        <div style={{ width: 300, margin: "40px auto", fontFamily: "sans-serif" }}>
-            <h2>Регистрация</h2>
+        <div className="register-form">
+            <h2 className="register-title">Регистрация</h2>
 
+            <label className="form-label">Имя</label>
             <input
                 type="text"
                 placeholder="Имя"
                 value={name}
                 onChange={e => setName(e.target.value)}
-                style={{ width: "100%", padding: 10, marginBottom: 10 }}
+                className="form-input"
             />
 
+            <label className="form-label">Email</label>
             <input
                 type="email"
                 placeholder="Email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                style={{ width: "100%", padding: 10, marginBottom: 10 }}
+                className="form-input"
             />
 
+            <label className="form-label">Пароль</label>
             <input
                 type="password"
                 placeholder="Пароль"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                style={{ width: "100%", padding: 10, marginBottom: 10 }}
+                className="form-input"
             />
 
-            <button onClick={handleRegister} style={{ width: "100%", padding: 10 }}>
+            <button onClick={handleRegister} className="button-primary">
                 Зарегистрироваться
             </button>
 
-            <button
-                onClick={onBack}
-                style={{ width: "100%", padding: 10, marginTop: 10 }}
-            >
+            <button onClick={onBack} className="button-secondary" style={{ marginTop: 10 }}>
                 Назад
             </button>
 
-            <p style={{ marginTop: 15 }}>{message}</p>
+            <p className="register-message">{message}</p>
         </div>
     );
 }

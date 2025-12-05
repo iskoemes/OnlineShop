@@ -54,10 +54,22 @@ export default function Header({ cartCount, onNavigate, onSearch, user, setUser 
 
         {menuOpen && (
             <nav className="nav-mobile fade-in">
-              <button onClick={() => { onNavigate("catalog"); setMenuOpen(false); }}>Каталог</button>
-              <button onClick={() => { onNavigate("cart"); setMenuOpen(false); }}>Корзина</button>
-              <button onClick={() => { onNavigate("account"); setMenuOpen(false); }}>Личный кабинет</button>
-              <button onClick={() => { onNavigate("admin"); setMenuOpen(false); }}>Админ</button>
+
+               <input placeholder="Поиск" onChange={e => onSearch(e.target.value)} />
+
+            <div className="cart-link" onClick={() => onNavigate("cart")}>
+              Корзина ({cartCount})
+            </div>
+
+              <AuthButtons
+                  goToLogin={() => { onNavigate("login"); setMenuOpen(false); }}
+                  goToRegister={() => { onNavigate("register"); setMenuOpen(false); }}
+              />
+              {user.uid !== "guest" && (
+                  <button className="button-secondary" onClick={() => { logout(); setMenuOpen(false); }}>
+                    Выйти
+                  </button>
+              )}
             </nav>
         )}
       </header>

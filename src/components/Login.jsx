@@ -19,37 +19,36 @@ export default function Login({ onSuccess, onBack }) {
     };
 
     return (
-        <div style={{ width: 300, margin: "40px auto", fontFamily: "sans-serif" }}>
-            <h2>Вход</h2>
+        <div className="login-form">
+            <h2 className="login-title">Вход</h2>
 
+            <label className="form-label">Email</label>
             <input
                 type="email"
                 placeholder="Email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                style={{ width: "100%", padding: 10, marginBottom: 10 }}
+                className="form-input"
             />
 
+            <label className="form-label">Пароль</label>
             <input
                 type="password"
                 placeholder="Пароль"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                style={{ width: "100%", padding: 10, marginBottom: 10 }}
+                className="form-input"
             />
 
-            <button onClick={handleLogin} style={{ width: "100%", padding: 10 }}>
+            <button onClick={handleLogin} className="button-primary">
                 Войти
             </button>
 
-            <button
-                onClick={onBack}
-                style={{ width: "100%", padding: 10, marginTop: 10 }}
-            >
+            <button onClick={onBack} className="button-secondary" style={{ marginTop: 10 }}>
                 Назад
             </button>
 
-            <p style={{ marginTop: 15 }}>{message}</p>
+            <p className="login-message">{message}</p>
         </div>
     );
 }
