@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default function AuthButtons({ goToLogin, goToRegister }) {
   return (
     <div className="flex-gap">
@@ -7,6 +9,6 @@ export default function AuthButtons({ goToLogin, goToRegister }) {
       <button className="button-secondary" onClick={goToRegister}>
         Зарегистрироваться
       </button>
-    </div>
-  );
+    </div>
+  );
 }

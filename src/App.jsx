@@ -8,6 +8,8 @@ import Cart from './components/Cart';
 import Checkout from './components/Checkout';
 import Account from './components/Account';
 import AdminPanel from './components/AdminPanel';
+import Register from "./components/Register.jsx";
+import Login from "./components/Login.jsx";
 
 export default function App() {
   const [products, setProducts] = useState(() => load('products', sampleProducts));
@@ -17,8 +19,10 @@ export default function App() {
   const [selected, setSelected] = useState(null);
   const [cart, setCart] = useState(() => load('cart', { items: [] }));
   const [toast, setToast] = useState('');
-  const [page, setPage] = useState('catalog');
-  const [user, setUser] = useState(() => load('user', { uid: 'guest', name: 'Гость', email: '' }));
+  const [page, setPage] = useState("catalog");
+  const [user, setUser] = useState(() =>
+      load("user", { uid: "guest", name: "Гость", email: "" })
+  );
   const [orders, setOrders] = useState(() => load('orders', []));
 
   useEffect(() => save('products', products), [products]);
@@ -111,14 +115,24 @@ export default function App() {
     setToast('Товар удалён');
   }
 
+  function goToLogin() {
+    setPage("login");
+  }
+
+  function goToRegister() {
+    setPage("register");
+  }
+
   return (
     <div>
       <Header
-        cartCount={cart.items.reduce((s, i) => s + i.quantity, 0)}
-        onNavigate={setPage}
-        onSearch={setQuery}
-        user={user}
-        setUser={setUser}
+          cartCount={cart.items.reduce((s, i) => s + i.quantity, 0)}
+          onNavigate={setPage}
+          onSearch={setQuery}
+          user={user}
+          setUser={setUser}
+          goToLogin={goToLogin}
+          goToRegister={goToRegister}
       />
       <main className="container">
         {page === 'catalog' && (
@@ -170,24 +184,21 @@ export default function App() {
         )}
 
         {page === "login" && (
-    <Login
-      onSuccess={userData => {
-        setUser(userData);
-        setPage("catalog");
-      }}
-      onBack={() => setPage("catalog")}
-    />
-  )}
-
-  {page === "register" && (
-    <Register
-      onSuccess={userData => {
-        setUser(userData);
-        setPage("catalog");
-      }}
-      onBack={() => setPage("catalog")}
-    />
-  )}
+            <Login
+                onSuccess={(userData) => {
+                  if (typeof userData === "string" && userData === "login") return;
+                  setUser(userData);
+                  setPage("catalog");
+                }}
+                onBack={() => setPage("catalog")}
+            />
+        )}
+        {page === "register" && (
+            <Register
+                onSuccess={() => setPage("login")}
+                onBack={() => setPage("catalog")}
+            />
+        )}
       </main>
       <footer className="footer">
         Simple frontend demo for Vite + React
