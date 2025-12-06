@@ -8,27 +8,35 @@ export default function Register({ onSuccess, onBack }) {
     const [message, setMessage] = useState("");
 
     const handleRegister = async () => {
+        console.log("Данные, которые отправляем:", { name, email, password, passwordLength: password.length });
+        if (!name.trim() || !email.trim() || !password.trim()) {
+            setMessage("Заполните все поля");
+            setMessage("Заполните все поля");
+            return;
+        }
+
+        setMessage("Регистрируем...");
+
         try {
             await registerUser(name, email, password);
 
-            setMessage("Успешная регистрация, теперь войдите");
             setName("");
             setEmail("");
             setPassword("");
+            setMessage("Успешно! Перенаправляем...");
 
+            setTimeout(() => onSuccess?.(), 800);
+
+            // переходим на страницу логина
             if (onSuccess) onSuccess();
         } catch (err) {
-            console.error("REGISTER ERROR:", err.code, err.message);
+            const msg = {
+                "auth/email-already-in-use": "Этот email уже занят",
+                "auth/weak-password": "Пароль должен быть ≥ 6 символов",
+                "auth/invalid-email": "Неверный email",
+            }[err.code] || `Ошибка: ${err.message}`;
 
-            if (err.code === "auth/email-already-in-use") {
-                setMessage("Такой email уже зарегистрирован. Попробуйте войти.");
-            } else if (err.code === "auth/weak-password") {
-                setMessage("Пароль должен быть не менее 6 символов.");
-            } else if (err.code === "auth/invalid-email") {
-                setMessage("Некорректный email.");
-            } else {
-                setMessage("Ошибка: " + err.message);
-            }
+            setMessage(msg);
         }
     };
 

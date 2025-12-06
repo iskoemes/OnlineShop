@@ -174,6 +174,7 @@ export default function App() {
         {page === 'admin' && (
           <AdminPanel
             isAdmin={isAdmin}
+            user={user}
             products={products}
             createProduct={createProduct}
             editProduct={editProduct}
