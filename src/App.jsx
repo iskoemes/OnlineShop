@@ -10,6 +10,7 @@ import Account from './components/Account';
 import AdminPanel from './components/AdminPanel';
 import Register from "./components/Register.jsx";
 import Login from "./components/Login.jsx";
+import { createGood } from '../api/createGood.js';
 
 export default function App() {
   const [products, setProducts] = useState(() => load('products', sampleProducts));
@@ -101,6 +102,7 @@ export default function App() {
   const isAdmin = !!user.isAdmin;
 
   function createProduct(p) {
+    createGood(p)
     setProducts([p, ...products]);
     setToast('Товар добавлен');
   }
@@ -122,6 +124,15 @@ export default function App() {
   function goToRegister() {
     setPage("register");
   }
+
+  function placeOrder(form) {
+  if (user.uid === "guest") {
+    setToast("Только зарегистрированные пользователи могут делать заказы");
+    return;
+  }
+
+}
+
 
   return (
     <div>
