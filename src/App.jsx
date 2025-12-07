@@ -18,17 +18,34 @@ export default function App() {
   const [category, setCategory] = useState('all');
   const [sort, setSort] = useState('new');
   const [selected, setSelected] = useState(null);
-  const [cart, setCart] = useState(() => load('cart', { items: [] }));
+
+  // --- ВАЖНО: user должен быть первым, чтобы cart/orders могли использовать user.uid
+  const [user, setUser] = useState(() =>
+    load("user", { uid: "guest", name: "Гость", email: "" })
+  );
+
+  // --- КОРЗИНА и ЗАКАЗЫ теперь индивидуальны для каждого пользователя
+  const [cart, setCart] = useState(() =>
+    load(`cart_${user.uid}`, { items: [] })
+  );
+  const [orders, setOrders] = useState(() =>
+    load(`orders_${user.uid}`, [])
+  );
+
   const [toast, setToast] = useState('');
   const [page, setPage] = useState("catalog");
-  const [user, setUser] = useState(() =>
-      load("user", { uid: "guest", name: "Гость", email: "" })
-  );
-  const [orders, setOrders] = useState(() => load('orders', []));
+  const [showCart, setShowCart] = useState(false);
 
+  // --- При смене пользователя подгружаем его корзину и заказы
+  useEffect(() => {
+    setCart(load(`cart_${user.uid}`, { items: [] }));
+    setOrders(load(`orders_${user.uid}`, []));
+  }, [user.uid]);
+
+  // --- Сохраняем корзину и заказы индивидуально
   useEffect(() => save('products', products), [products]);
-  useEffect(() => save('cart', cart), [cart]);
-  useEffect(() => save('orders', orders), [orders]);
+  useEffect(() => save(`cart_${user.uid}`, cart), [cart, user.uid]);
+  useEffect(() => save(`orders_${user.uid}`, orders), [orders, user.uid]);
   useEffect(() => save('user', user), [user]);
 
   const filtered = useMemo(() => {
@@ -77,6 +94,10 @@ export default function App() {
   }
 
   function placeOrder(form) {
+    if (user.uid === "guest") {
+      setToast("Только зарегистрированные пользователи могут делать заказы");
+      return;
+    }
     if (!cart.items.length) {
       setToast('Корзина пуста');
       return;
@@ -84,6 +105,7 @@ export default function App() {
     const newOrder = {
       orderId: 'o_' + Math.random().toString(36).slice(2, 9),
       userId: user.uid,
+      email: user.email,
       items: cart.items,
       total: cart.items.reduce((s, it) => s + it.price * it.quantity, 0),
       status: 'pending',
@@ -97,6 +119,7 @@ export default function App() {
     clearCart();
     setToast('Заказ создан');
     setPage('account');
+    setShowCart(false);
   }
 
   const isAdmin = !!user.isAdmin;
@@ -125,25 +148,19 @@ export default function App() {
     setPage("register");
   }
 
-  function placeOrder(form) {
-  if (user.uid === "guest") {
-    setToast("Только зарегистрированные пользователи могут делать заказы");
-    return;
-  }
-
-}
-
-
   return (
     <div>
       <Header
-          cartCount={cart.items.reduce((s, i) => s + i.quantity, 0)}
-          onNavigate={setPage}
-          onSearch={setQuery}
-          user={user}
-          setUser={setUser}
-          goToLogin={goToLogin}
-          goToRegister={goToRegister}
+        cartCount={cart.items.reduce((s, i) => s + i.quantity, 0)}
+        onNavigate={p => {
+          if (p === "cart") setShowCart(true);
+          else setPage(p);
+        }}
+        onSearch={setQuery}
+        user={user}
+        setUser={setUser}
+        goToLogin={goToLogin}
+        goToRegister={goToRegister}
       />
       <main className="container">
         {page === 'catalog' && (
@@ -158,19 +175,10 @@ export default function App() {
             onAdd={addToCart}
           />
         )}
-        {page === 'cart' && (
-          <Cart
-            cart={cart}
-            updateQuantity={updateQuantity}
-            removeFromCart={removeFromCart}
-            clearCart={clearCart}
-            onCheckout={() => setPage('checkout')}
-          />
-        )}
         {page === 'checkout' && (
           <Checkout
             onPlace={placeOrder}
-            onBack={() => setPage('cart')}
+            onBack={() => setPage('catalog')}
             user={user}
           />
         )}
@@ -196,26 +204,36 @@ export default function App() {
         )}
 
         {page === "login" && (
-            <Login
-                onSuccess={(userData) => {
-                  if (typeof userData === "string" && userData === "login") return;
-                  setUser(userData);
-                  setPage("catalog");
-                }}
-                onBack={() => setPage("catalog")}
-            />
+          <Login
+            onSuccess={(userData) => {
+              if (typeof userData === "string" && userData === "login") return;
+              setUser(userData);
+              setPage("catalog");
+            }}
+            onBack={() => setPage("catalog")}
+          />
         )}
         {page === "register" && (
-            <Register
-                onSuccess={() => setPage("login")}
-                onBack={() => setPage("catalog")}
-            />
+          <Register
+            onSuccess={() => setPage("login")}
+            onBack={() => setPage("catalog")}
+          />
         )}
       </main>
       <footer className="footer">
         ryskeldimyrzaliev20@icloud.com
       </footer>
       <ProductModal product={selected} onClose={() => setSelected(null)} onAdd={addToCart} />
+      {showCart && (
+        <Cart
+          cart={cart}
+          updateQuantity={updateQuantity}
+          removeFromCart={removeFromCart}
+          clearCart={clearCart}
+          onCheckout={() => setPage('checkout')}
+          onClose={() => setShowCart(false)}
+        />
+      )}
       <Toast message={toast} onClose={() => setToast('')} />
     </div>
   );

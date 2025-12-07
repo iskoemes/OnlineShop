@@ -10,10 +10,8 @@ export default function Login({ onSuccess, onBack }) {
         try {
             const userData = await loginUser(email, password);
             setMessage("Успешный вход");
-
             if (onSuccess) onSuccess(userData);
         } catch (err) {
-            console.error("LOGIN ERROR:", err.code, err.message);
             setMessage("Ошибка: " + err.message);
         }
     };
@@ -21,7 +19,6 @@ export default function Login({ onSuccess, onBack }) {
     return (
         <div className="login-form">
             <h2 className="login-title">Вход</h2>
-
             <label className="form-label">Email</label>
             <input
                 type="email"
@@ -30,7 +27,6 @@ export default function Login({ onSuccess, onBack }) {
                 onChange={e => setEmail(e.target.value)}
                 className="form-input"
             />
-
             <label className="form-label">Пароль</label>
             <input
                 type="password"
@@ -39,15 +35,12 @@ export default function Login({ onSuccess, onBack }) {
                 onChange={e => setPassword(e.target.value)}
                 className="form-input"
             />
-
             <button onClick={handleLogin} className="button-primary">
                 Войти
             </button>
-
             <button onClick={onBack} className="button-secondary" style={{ marginTop: 10 }}>
                 Назад
             </button>
-
             <p className="login-message">{message}</p>
         </div>
     );

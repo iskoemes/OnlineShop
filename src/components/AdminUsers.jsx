@@ -21,13 +21,13 @@ export default function AdminUsers({ currentUser }) {
     };
 
     if (!currentUser?.isAdmin) {
-        return <p>Нет доступа</p>;
+        return <p className="text-gray" style={{ margin: 40 }}>Нет доступа</p>;
     }
 
     return (
-        <div>
-            <h2>Пользователи</h2>
-            <table>
+        <div className="admin-users">
+            <h2 className="text-large text-bold" style={{ marginBottom: 18 }}>Пользователи</h2>
+            <table className="admin-table">
                 <thead>
                 <tr>
                     <th>Email</th>
@@ -44,13 +44,13 @@ export default function AdminUsers({ currentUser }) {
                         <td>{u.admin ? "Да" : "Нет"}</td>
                         <td>
                             {u.uid === currentUser.uid ? (
-                                <span>Это вы</span>
+                                <span className="text-gray">Это вы</span>
                             ) : u.admin ? (
-                                <button onClick={() => toggleAdmin(u.uid, false)}>
+                                <button className="button-secondary" onClick={() => toggleAdmin(u.uid, false)}>
                                     Убрать админа
                                 </button>
                             ) : (
-                                <button onClick={() => toggleAdmin(u.uid, true)}>
+                                <button className="button-primary" onClick={() => toggleAdmin(u.uid, true)}>
                                     Сделать админом
                                 </button>
                             )}

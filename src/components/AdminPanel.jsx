@@ -25,8 +25,8 @@ export default function AdminPanel({ isAdmin, products, createProduct, editProdu
   }
 
   return (
-    <div className="fade-in" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-      <div style={{ background: '#fff', padding: '20px', borderRadius: '10px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+    <div className="fade-in admin-panel-grid">
+      <div className="admin-panel-block">
         <h3 className="text-bold text-large">Создать товар</h3>
         <form onSubmit={submit} className="admin-form">
           <input className="form-input" placeholder="Название" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} />
@@ -39,7 +39,7 @@ export default function AdminPanel({ isAdmin, products, createProduct, editProdu
           <button className="button-primary" type="submit">Создать</button>
         </form>
       </div>
-      <div style={{ background: '#fff', padding: '20px', borderRadius: '10px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+      <div className="admin-panel-block">
         <h3 className="text-bold text-large">Товары</h3>
         <div className="space-y">
           {products.map(p => (
