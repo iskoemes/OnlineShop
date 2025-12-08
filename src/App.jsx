@@ -183,12 +183,15 @@ export default function App() {
           />
         )}
         {page === 'account' && (
-          <Account
-            user={user}
-            orders={orders}
-            setUser={setUser}
-            onEditProfile={(u) => setUser({ ...user, ...u })}
-          />
+        <Account
+  user={user}
+  orders={orders}
+  onEditProfile={() => openEditModal()}
+  onDeleteOrder={(orderId) => {
+    // тут удаляешь из базы / состояния
+    setOrders(orders.filter(o => o.orderId !== orderId));
+  }}
+/>
         )}
         {page === 'admin' && (
           <AdminPanel
