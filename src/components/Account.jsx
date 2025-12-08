@@ -63,8 +63,7 @@ export default function Account({ user, orders = [], onDeleteOrder, onEditProfil
 
           {isGuest ? (
             <div style={{ textAlign: 'center', padding: '60px 20px', color: '#666' }}>
-              Гости не могут просматривать заказы.<br />
-              <a href="/login" style={{ color: '#2563eb', textDecoration: 'underline' }}>Войти в аккаунт</a>
+              Гости не могут просматривать заказы. Зарегистрируйтесь!<br />
             </div>
           ) : userOrders.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '60px 20px', color: '#888' }}>
