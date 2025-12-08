@@ -12,6 +12,7 @@ export default function Header({ cartCount, onNavigate, onSearch, user, setUser 
   };
 
   const isGuest = !user || user.uid === 'guest';
+  const isAdmin = !!user?.isAdmin;
 
   return (
     <header className="header">
@@ -23,9 +24,9 @@ export default function Header({ cartCount, onNavigate, onSearch, user, setUser 
           {/* ДЕСКТОП МЕНЮ */}
           <nav className="nav-desktop flex-gap">
             <button onClick={() => onNavigate('catalog')}>Каталог</button>
-            <button onClick={() => onNavigate('cart')}>Корзина</button>
+            <button onClick={() => onNavigate('cart')}>Корзина ({cartCount})</button>
             <button onClick={() => onNavigate('account')}>Личный кабинет</button>
-            <button onClick={() => onNavigate('admin')}>Админ</button>
+            {isAdmin && <button onClick={() => onNavigate('admin')}>Админ</button>}
           </nav>
 
           {/* БУРГЕР */}
@@ -40,9 +41,9 @@ export default function Header({ cartCount, onNavigate, onSearch, user, setUser 
         <div className="right-controls flex-gap">
           <input placeholder="Поиск" onChange={e => onSearch(e.target.value)} />
 
-          <div className="cart-link" onClick={() => onNavigate('cart')}>
+          {/* <div className="cart-link" onClick={() => onNavigate('cart')}>
             Корзина ({cartCount})
-          </div>
+          </div> */}
 
           {/* 🔹 ЕСЛИ ГОСТЬ — показываем Вход / Регистрация */}
           {isGuest ? (
@@ -68,7 +69,7 @@ export default function Header({ cartCount, onNavigate, onSearch, user, setUser 
           <button onClick={() => { onNavigate("catalog"); setMenuOpen(false); }}>Каталог</button>
           <button onClick={() => { onNavigate("cart"); setMenuOpen(false); }}>Корзина</button>
           <button onClick={() => { onNavigate("account"); setMenuOpen(false); }}>Личный кабинет</button>
-          <button onClick={() => { onNavigate("admin"); setMenuOpen(false); }}>Админ</button>
+          {isAdmin && <button onClick={() => { onNavigate("admin"); setMenuOpen(false); }}>Админ</button>}
           <div style={{ marginTop: 12 }}>
             {isGuest ? (
               <AuthButtons
