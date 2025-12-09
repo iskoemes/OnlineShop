@@ -26,6 +26,7 @@ export default function Header({ cartCount, onNavigate, onSearch, user, setUser 
             <button onClick={() => onNavigate('catalog')}>Каталог</button>
             <button onClick={() => onNavigate('cart')}>Корзина ({cartCount})</button>
             <button onClick={() => onNavigate('account')}>Личный кабинет</button>
+            {/* {!isGuest && <button onClick={() => onNavigate('collectHoliday')}>Собрать праздник</button>} */}
             {isAdmin && <button onClick={() => onNavigate('admin')}>Админ</button>}
           </nav>
 
@@ -54,7 +55,7 @@ export default function Header({ cartCount, onNavigate, onSearch, user, setUser 
           ) : (
             /* 🔹 ЕСЛИ ВОШЁЛ — только имя + Выйти */
             <div className="flex-gap">
-              <span>{user.name || user.email}</span>
+              {/* <span>{user.name || user.email}</span> */}
               <button className="button-secondary" onClick={logout}>
                 Выйти
               </button>

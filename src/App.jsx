@@ -222,6 +222,11 @@ export default function App() {
             onBack={() => setPage("catalog")}
           />
         )}
+        {/* {page === 'collectHoliday' && ( 
+          <CollectHoliday 
+            user={user}  
+          />
+        )} */}
       </main>
       <footer className="footer">
         ryskeldimyrzaliev20@icloud.com
