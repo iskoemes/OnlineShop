@@ -1,3 +1,4 @@
+// AdminUsers.jsx
 import React, { useEffect, useState } from "react";
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
@@ -46,12 +47,31 @@ export default function AdminUsers({ currentUser }) {
         setCurrentPage(page);
     };
 
+    const [pageInput, setPageInput] = useState(currentPage.toString());
+
+    useEffect(() => {
+        setPageInput(currentPage.toString());
+    }, [currentPage]);
+
+    const handlePageInputChange = (e) => {
+        setPageInput(e.target.value);
+    };
+
+    const handlePageSubmit = () => {
+        const page = parseInt(pageInput);
+        if (!isNaN(page) && page >= 1 && page <= totalPages) {
+            handlePageChange(page);
+        } else {
+            setPageInput(currentPage.toString());
+        }
+    };
+
     if (!currentUser?.isAdmin) {
         return <p className="text-gray" style={{ margin: 40 }}>Нет доступа</p>;
     }
 
     return (
-        <div className="admin-users">
+        <div className="admin-users" style={{ minHeight: '500px' }}>
             <h2 className="text-large text-bold" style={{ marginBottom: 18 }}>Пользователи</h2>
 
             <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
@@ -113,31 +133,35 @@ export default function AdminUsers({ currentUser }) {
                 </table>
             </div>
 
-            <div style={{
-                display: "flex",
-                justifyContent: "center",
-                marginTop: "15px",
-                gap: "8px"
-            }}>
-                <button 
-                    className="button-secondary"
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                >
-                    Назад
-                </button>
+            <div className="pagination" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '10px', gap: '10px' }}>
+              <button 
+                className="button-secondary" 
+                onClick={() => handlePageChange(currentPage - 1)} 
+                disabled={currentPage === 1}
+                style={{ padding: '5px 10px', borderRadius: '4px' }}
+              >
+                &lt;
+              </button>
 
-                <span style={{ padding: "6px 12px" }}>
-                    {currentPage} / {totalPages}
-                </span>
+              <input
+                type="number"
+                value={pageInput}
+                onChange={handlePageInputChange}
+                onKeyDown={(e) => { if (e.key === 'Enter') handlePageSubmit(); }}
+                onBlur={handlePageSubmit}
+                style={{ width: '50px', textAlign: 'center', padding: '5px', borderRadius: '4px', border: '1px solid #ccc' }}
+              />
 
-                <button 
-                    className="button-secondary"
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                >
-                    Вперед
-                </button>
+              <span>/ {totalPages}</span>
+
+              <button 
+                className="button-secondary" 
+                onClick={() => handlePageChange(currentPage + 1)} 
+                disabled={currentPage === totalPages}
+                style={{ padding: '5px 10px', borderRadius: '4px' }}
+              >
+                &gt;
+              </button>
             </div>
         </div>
     );

@@ -320,7 +320,28 @@ button, input, select, textarea { font-family: inherit; }
   width: 100%;
   border-radius: 10px;
   margin-bottom: 10px;
+  height: 250px;
+  object-fit: cover; 
 }
+
+.icon {
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+  margin-right: 4px;
+  transform: translateY(2px);
+}
+
+.color-box {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-block;
+  box-sizing: border-box;
+  margin-right: 6px;
+}
+
 
 .price-row {
   margin-top: 10px;

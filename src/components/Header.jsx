@@ -24,8 +24,8 @@ export default function Header({ cartCount, onNavigate, onSearch, user, setUser 
           {/* ДЕСКТОП МЕНЮ */}
           <nav className="nav-desktop flex-gap">
             <button onClick={() => onNavigate('catalog')}>Каталог</button>
-            <button onClick={() => onNavigate('cart')}>Корзина ({cartCount})</button>
-            <button onClick={() => onNavigate('account')}>Личный кабинет</button>
+            <button onClick={() => onNavigate('cart')}> <img className='icon' src="basket.svg" alt="" /> ({cartCount})</button>
+            {/* <button onClick={() => onNavigate('account')}>  <img className='icon' src="personalAccount.svg" alt="" /> </button> */}
             {/* {!isGuest && <button onClick={() => onNavigate('collectHoliday')}>Собрать праздник</button>} */}
             {isAdmin && <button onClick={() => onNavigate('admin')}>Админ</button>}
           </nav>
@@ -47,20 +47,17 @@ export default function Header({ cartCount, onNavigate, onSearch, user, setUser 
           </div> */}
 
           {/* 🔹 ЕСЛИ ГОСТЬ — показываем Вход / Регистрация */}
-          {isGuest ? (
-            <AuthButtons
-              goToLogin={() => onNavigate('login')}
-              goToRegister={() => onNavigate('register')}
-            />
-          ) : (
-            /* 🔹 ЕСЛИ ВОШЁЛ — только имя + Выйти */
-            <div className="flex-gap">
-              {/* <span>{user.name || user.email}</span> */}
-              <button className="button-secondary" onClick={logout}>
-                Выйти
-              </button>
-            </div>
-          )}
+         {isGuest ? (
+  <AuthButtons
+    goToLogin={() => onNavigate('login')}
+    goToRegister={() => onNavigate('register')}
+  />
+) : (
+  <button onClick={() => onNavigate('account')}>
+    <img className="icon" src="personalAccount.svg" alt="" />
+  </button>
+)}
+
         </div>
       </div>
 
@@ -68,8 +65,8 @@ export default function Header({ cartCount, onNavigate, onSearch, user, setUser 
       {menuOpen && (
         <nav className="nav-mobile fade-in">
           <button onClick={() => { onNavigate("catalog"); setMenuOpen(false); }}>Каталог</button>
-          <button onClick={() => { onNavigate("cart"); setMenuOpen(false); }}>Корзина</button>
-          <button onClick={() => { onNavigate("account"); setMenuOpen(false); }}>Личный кабинет</button>
+          <button onClick={() => { onNavigate("cart"); setMenuOpen(false); }}><img className='icon' src="basket.svg" alt="" /> ({cartCount})</button>
+          <button onClick={() => { onNavigate("account"); setMenuOpen(false); }}> <img className='icon' src="personalAccount.svg" alt="" /></button>
           {isAdmin && <button onClick={() => { onNavigate("admin"); setMenuOpen(false); }}>Админ</button>}
           <div style={{ marginTop: 12 }}>
             {isGuest ? (
@@ -78,9 +75,8 @@ export default function Header({ cartCount, onNavigate, onSearch, user, setUser 
                 goToRegister={() => { onNavigate('register'); setMenuOpen(false); }}
               />
             ) : (
-              <button className="button-secondary" onClick={() => { logout(); setMenuOpen(false); }}>
-                Выйти
-              </button>
+              <button onClick={() => { onNavigate("account"); setMenuOpen(false); }}> <img className='icon' src="personalAccount.svg" alt="" /></button>
+
             )}
           </div>
         </nav>

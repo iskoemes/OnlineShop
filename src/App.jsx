@@ -148,6 +148,14 @@ export default function App() {
     setPage("register");
   }
 
+  function logout() {
+  setUser({ uid: "guest", name: "Гость", email: "" });
+  localStorage.removeItem("user");
+  localStorage.removeItem("isAdmin");
+  setPage("catalog");
+}
+
+
   return (
     <div>
       <Header
@@ -184,12 +192,12 @@ export default function App() {
         )}
         {page === 'account' && (
         <Account
-  user={user}
-  orders={orders}
-  onEditProfile={() => openEditModal()}
-  onDeleteOrder={(orderId) => {
-    // тут удаляешь из базы / состояния
-    setOrders(orders.filter(o => o.orderId !== orderId));
+   user={user}
+orders={orders}
+logout={logout}
+products={products}
+onDeleteOrder={(orderId) => {
+setOrders(orders.filter(o => o.orderId !== orderId));
   }}
 />
         )}

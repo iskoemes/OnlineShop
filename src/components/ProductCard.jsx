@@ -7,7 +7,7 @@ export default function ProductCard({ product, onSelect, onAdd }) {
 
   return (
     <div className="product-card">
-      <img src={product.imageUrl} alt={product.title} className="product-img" />
+      <img src={product.imageUrl} alt={product.title} className="product-img"/>
 
       <h3>{product.title}</h3>
       <div className="text-gray">{product.description}</div>

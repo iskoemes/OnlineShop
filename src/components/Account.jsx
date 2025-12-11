@@ -1,6 +1,7 @@
+// Account.jsx
 import React, { useState } from 'react';
 
-export default function Account({ user, orders = [], onDeleteOrder, onEditProfile }) {
+export default function Account({ user, orders = [], onDeleteOrder, onEditProfile, logout, products = [] }) {
   const isGuest = user?.uid === 'guest';
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [deletingOrder, setDeletingOrder] = useState(null);
@@ -13,12 +14,14 @@ export default function Account({ user, orders = [], onDeleteOrder, onEditProfil
     if (deletingOrder && onDeleteOrder) {
       onDeleteOrder(deletingOrder.orderId);
       setDeletingOrder(null);
-      // Если удаляем открытый заказ — закрываем модалку
+
       if (selectedOrder?.orderId === deletingOrder.orderId) {
         setSelectedOrder(null);
       }
     }
   };
+
+  const recommendedProducts = products.filter(p => p.isRecommended === true);
 
   return (
     <div style={{ padding: '20px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', maxWidth: '1200px', margin: '0 auto' }}>
@@ -27,35 +30,38 @@ export default function Account({ user, orders = [], onDeleteOrder, onEditProfil
       </h2>
 
       <div style={{ display: 'grid', gridTemplateColumns: '380px 1fr', gap: '30px' }}>
-        {/* === ПРОФИЛЬ === */}
+        
         <div style={{ background: '#fff', padding: '30px', borderRadius: '16px', boxShadow: '0 10px 30px rgba(0,0,0,0.08)' }}>
           <h3 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>Мои данные</h3>
+          
           <div style={{ lineHeight: '2', color: '#333' }}>
             <div><strong>Имя:</strong> {user.name || '—'}</div>
             <div><strong>Email:</strong> {user.email}</div>
             {user.phone && <div><strong>Телефон:</strong> {user.phone}</div>}
             {user.address && <div><strong>Адрес:</strong> {user.address}</div>}
           </div>
-          {/* <button
-            onClick={onEditProfile}
-            style={{
-              marginTop: '25px',
-              width: '100%',
-              padding: '14px',
-              background: '#2563eb',
-              color: 'white',
-              border: 'none',
-              borderRadius: '10px',
-              fontSize: '16px',
-              fontWeight: '600',
-              cursor: 'pointer'
-            }}
-          >
-            Редактировать профиль
-          </button> */}
+
+          {!isGuest && (
+            <button
+              onClick={logout}
+              style={{
+                marginTop: '25px',
+                width: '100%',
+                padding: '14px',
+                background: '#ef4444',
+                color: 'white',
+                border: 'none',
+                borderRadius: '10px',
+                fontSize: '16px',
+                fontWeight: '600',
+                cursor: 'pointer'
+              }}
+            >
+              Выйти
+            </button>
+          )}
         </div>
 
-        {/* === ЗАКАЗЫ === */}
         <div style={{ background: '#fff', padding: '30px', borderRadius: '16px', boxShadow: '0 10px 30px rgba(0,0,0,0.08)' }}>
           <h3 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '25px' }}>
             Мои заказы ({userOrders.length})
@@ -63,7 +69,7 @@ export default function Account({ user, orders = [], onDeleteOrder, onEditProfil
 
           {isGuest ? (
             <div style={{ textAlign: 'center', padding: '60px 20px', color: '#666' }}>
-              Гости не могут просматривать заказы. Зарегистрируйтесь!<br />
+              Гости не могут просматривать заказы. Зарегистрируйтесь!
             </div>
           ) : userOrders.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '60px 20px', color: '#888' }}>
@@ -119,7 +125,7 @@ export default function Account({ user, orders = [], onDeleteOrder, onEditProfil
 
                       <button
                         onClick={(e) => {
-                          e.stopPropagation(); // ГЛАВНОЕ — останавливаем открытие модалки
+                          e.stopPropagation();
                           setDeletingOrder(order);
                         }}
                         style={{
@@ -145,7 +151,24 @@ export default function Account({ user, orders = [], onDeleteOrder, onEditProfil
         </div>
       </div>
 
-      {/* === МОДАЛКА ПОДРОБНОСТЕЙ ЗАКАЗА === */}
+      {recommendedProducts.length > 0 && (
+        <div style={{ marginTop: '40px', background: '#fff', padding: '30px', borderRadius: '16px', boxShadow: '0 10px 30px rgba(0,0,0,0.08)' }}>
+          <h3 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '25px' }}>
+            Рекомендуемые товары
+          </h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '20px' }}>
+            {recommendedProducts.map(p => (
+              <div key={p.id} style={{ border: '1px solid #e2e8f0', borderRadius: '12px', padding: '20px', textAlign: 'center' }}>
+                {p.imageUrl && <img src={p.imageUrl} alt={p.title} style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px', marginBottom: '10px' }} />}
+                <div style={{ fontSize: '18px', fontWeight: 'bold' }}>{p.title}</div>
+                <div style={{ color: '#dc2626', fontSize: '16px', marginTop: '5px' }}>${p.price}</div>
+                {p.description && <div style={{ color: '#666', fontSize: '14px', marginTop: '10px' }}>{p.description.substring(0, 100)}...</div>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {selectedOrder && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }} onClick={() => setSelectedOrder(null)}>
           <div style={{ background: 'white', borderRadius: '20px', width: '90%', maxWidth: '800px', maxHeight: '90vh', overflowY: 'auto', padding: '40px', position: 'relative' }} onClick={e => e.stopPropagation()}>
@@ -195,7 +218,6 @@ export default function Account({ user, orders = [], onDeleteOrder, onEditProfil
         </div>
       )}
 
-      {/* === ПОДТВЕРЖДЕНИЕ УДАЛЕНИЯ === */}
       {deletingOrder && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
           <div style={{ background: 'white', padding: '40px', borderRadius: '16px', width: '90%', maxWidth: '420px', textAlign: 'center' }}>
@@ -220,6 +242,7 @@ export default function Account({ user, orders = [], onDeleteOrder, onEditProfil
           </div>
         </div>
       )}
+
     </div>
   );
 }
