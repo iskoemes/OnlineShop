@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ProductCard from './ProductCard'; 
 import ProductModal from './ProductModal'; 
 
-export default function Account({ user, orders = [], onDeleteOrder, onEditProfile, logout, products = [], onAdd }) {
+export default function Account({ user, orders = [], onDeleteOrder, logout, products = [], onAdd }) {
   const isGuest = user?.uid === 'guest';
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [deletingOrder, setDeletingOrder] = useState(null);

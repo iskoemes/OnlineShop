@@ -19,7 +19,7 @@ export default function OrderModal({ order, onClose, onDelete }) {
     >
       <div
         className="modal-content"
-        onClick={stop}
+        onClick={e => e.stopPropagation()}
         style={{
           width: "600px",
           background: "#fff",
@@ -95,40 +95,21 @@ export default function OrderModal({ order, onClose, onDelete }) {
           Закрыть
         </button>
 
-        
-              <button
-                className="button-danger"
-                style={{
-                  marginTop: "10px",
-                  flex: 1,
-                  padding: "12px",
-                  borderRadius: "10px",
-                  fontSize: "15px",
-                  cursor: "pointer"
-                }}
-                onClick={() => onDelete(order.orderId)}
-              >
-                Удалить
-              </button>
+        <button
+          className="button-danger"
+          style={{
+            marginTop: "10px",
+            flex: 1,
+            padding: "12px",
+            borderRadius: "10px",
+            fontSize: "15px",
+            cursor: "pointer"
+          }}
+          onClick={() => onDelete(order.orderId)}
+        >
+          Удалить
+        </button>
       </div>
     </div>
   );
 }
-
-
-
-
-
-              <button
-                className="button-danger"
-                style={{
-                  flex: 1,
-                  padding: "12px",
-                  borderRadius: "10px",
-                  fontSize: "15px",
-                  cursor: "pointer"
-                }}
-                onClick={() => onDelete(order.orderId)}
-              >
-                Удалить
-              </button>
