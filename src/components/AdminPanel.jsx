@@ -64,6 +64,7 @@ export default function AdminPanel({ isAdmin, products, createProduct, editProdu
   const [currentPageProducts, setCurrentPageProducts] = useState(1);
   const [currentPageOrders, setCurrentPageOrders] = useState(1);
   const [searchTitle, setSearchTitle] = useState('');
+  const [filterStatus, setFilterStatus] = useState('all');
   const itemsPerPage = 10;
   const productsListRef = useRef(null);
   const ordersListRef = useRef(null);
@@ -78,13 +79,15 @@ export default function AdminPanel({ isAdmin, products, createProduct, editProdu
     p.title.toLowerCase().includes(searchTitle.toLowerCase())
   );
 
+  const filteredOrders = orders.filter(o => filterStatus === 'all' || o.status === filterStatus);
+
   const indexOfLastProduct = currentPageProducts * itemsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
   const indexOfLastOrder = currentPageOrders * itemsPerPage;
   const indexOfFirstOrder = indexOfLastOrder - itemsPerPage;
-  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+  const currentOrders = filteredOrders.slice(indexOfFirstOrder, indexOfLastOrder);
 
   useEffect(() => {
     setCurrentPageProducts(1);
@@ -93,13 +96,20 @@ export default function AdminPanel({ isAdmin, products, createProduct, editProdu
     }
   }, [searchTitle]);
 
+  useEffect(() => {
+    setCurrentPageOrders(1);
+    if (ordersListRef.current) {
+      ordersListRef.current.scrollTop = 0;
+    }
+  }, [filterStatus]);
+
   const handleProductPageChange = (page) => {
     if (page < 1 || page > Math.ceil(filteredProducts.length / itemsPerPage)) return;
     setCurrentPageProducts(page);
   };
 
   const handleOrderPageChange = (page) => {
-    if (page < 1 || page > Math.ceil(orders.length / itemsPerPage)) return;
+    if (page < 1 || page > Math.ceil(filteredOrders.length / itemsPerPage)) return;
     setCurrentPageOrders(page);
   };
 
@@ -241,7 +251,7 @@ export default function AdminPanel({ isAdmin, products, createProduct, editProdu
                     style={{
                       width: "28px",
                       height: "28px",
-                      borderRadius: "6px",
+                      borderRadius: "50%",
                       cursor: "pointer",
                       border: selected ? "3px solid #444" : "1px solid #ccc",
                       background: color
@@ -260,7 +270,7 @@ export default function AdminPanel({ isAdmin, products, createProduct, editProdu
               <input
                 type="checkbox"
                 checked={form.isRecommended}
-                onChange={e => setForm({ ...form, isRecommended: e.target.value })}
+                onChange={e => setForm({ ...form, isRecommended: e.target.checked })}
               />
               Рекомендованный товар
             </label>
@@ -290,18 +300,19 @@ export default function AdminPanel({ isAdmin, products, createProduct, editProdu
               </div>
 
               <div className="flex-gap" style={{ display: 'flex', gap: '10px' }}>
-                <button className="button-secondary" onClick={() => setSelectedProduct(p)}>
+                <button className="button-secondary" onClick={() => setSelectedProduct(p)} style={{ width: '120px' }}>
                   Редактировать
                 </button>
 
                 <button 
                   className={p.isRecommended ? "button-danger" : "button-primary"} 
                   onClick={() => toggleRecommended(p)}
+                  style={{ width: '220px', textAlign: 'center' }}
                 >
                   {p.isRecommended ? 'Убрать из рекомендованных' : 'Добавить в рекомендованные'}
                 </button>
 
-                <button className="button-danger" onClick={() => deleteProduct(p.id)}>
+                <button className="button-danger" onClick={() => deleteProduct(p.id)} style={{ width: '120px' }}>
                   Удалить
                 </button>
               </div>
@@ -321,6 +332,19 @@ export default function AdminPanel({ isAdmin, products, createProduct, editProdu
       {orders.length > 0 && (
         <div className="admin-panel-block" style={{ minHeight: '500px' }}>
           <h3 className="text-bold text-large">Заказы</h3>
+
+          <select
+            className="form-input"
+            value={filterStatus}
+            onChange={e => setFilterStatus(e.target.value)}
+            style={{ marginBottom: '10px' }}
+          >
+            <option value="all">Все</option>
+            <option value="pending">В ожидании</option>
+            <option value="paid">Оплаченный</option>
+            <option value="shipped">Отправленный</option>
+            <option value="cancelled">Отменено</option>
+          </select>
 
           <div className="space-y" style={{ maxHeight: "400px", overflowY: "auto" }} ref={ordersListRef}>
 
@@ -351,7 +375,7 @@ export default function AdminPanel({ isAdmin, products, createProduct, editProdu
 
           <Pagination 
             currentPage={currentPageOrders} 
-            totalItems={orders.length} 
+            totalItems={filteredOrders.length} 
             itemsPerPage={itemsPerPage} 
             onPageChange={handleOrderPageChange} 
           />

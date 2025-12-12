@@ -283,7 +283,7 @@ button, input, select, textarea { font-family: inherit; }
   background: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justifyContent: center;
   z-index: 9999;
 }
 
@@ -449,6 +449,15 @@ button, input, select, textarea { font-family: inherit; }
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
+.admin-item button {
+  padding: 8px 12px;
+  min-width: 120px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* --- TOAST --- */
 .toast {
   position: fixed;
@@ -478,7 +487,7 @@ button, input, select, textarea { font-family: inherit; }
 /* --- TEXT --- */
 .text-bold { font-weight: bold; }
 .text-large { font-size: 22px; }
-.text-gray { color: #888; }
+.text-gray { color: #888; word-wrap: break-word; hyphens: auto; }
 .text-small { font-size: 14px; }
 
 /* --- ANIMATION --- */
@@ -582,7 +591,7 @@ button, input, select, textarea { font-family: inherit; }
 .admin-panel-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 30px;
 }
 .admin-panel-block {
   background: #fff;
@@ -590,11 +599,12 @@ button, input, select, textarea { font-family: inherit; }
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   min-width: 0;
+  min-height: 500px;
 }
 @media (max-width: 900px) {
   .admin-panel-grid {
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 20px;
   }
   .admin-panel-block {
     padding: 12px 4px;

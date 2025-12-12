@@ -1,3 +1,4 @@
+// App.js (updated)
 import React, { useEffect, useMemo, useState } from 'react';
 import { sampleProducts, save, load } from './utils';
 import Toast from './components/Toast';
@@ -10,6 +11,7 @@ import Account from './components/Account';
 import AdminPanel from './components/AdminPanel';
 import Register from "./components/Register.jsx";
 import Login from "./components/Login.jsx";
+import Footer from './components/Footer';  // Import the new Footer component
 import { createGood } from '../api/createGood.js';
 
 export default function App() {
@@ -199,6 +201,7 @@ products={products}
 onDeleteOrder={(orderId) => {
 setOrders(orders.filter(o => o.orderId !== orderId));
   }}
+onAdd={addToCart}
 />
         )}
         {page === 'admin' && (
@@ -236,9 +239,7 @@ setOrders(orders.filter(o => o.orderId !== orderId));
           />
         )} */}
       </main>
-      <footer className="footer">
-        ryskeldimyrzaliev20@icloud.com
-      </footer>
+      <Footer />  {/* Use the new Footer component */}
       <ProductModal product={selected} onClose={() => setSelected(null)} onAdd={addToCart} />
       {showCart && (
         <Cart

@@ -1,10 +1,13 @@
 // Account.jsx
 import React, { useState } from 'react';
+import ProductCard from './ProductCard'; // Assuming ProductCard is in the same directory or adjust path
+import ProductModal from './ProductModal'; // Assuming ProductModal is in the same directory or adjust path
 
-export default function Account({ user, orders = [], onDeleteOrder, onEditProfile, logout, products = [] }) {
+export default function Account({ user, orders = [], onDeleteOrder, onEditProfile, logout, products = [], onAdd }) {
   const isGuest = user?.uid === 'guest';
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [deletingOrder, setDeletingOrder] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const userOrders = isGuest
     ? []
@@ -158,12 +161,12 @@ export default function Account({ user, orders = [], onDeleteOrder, onEditProfil
           </h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '20px' }}>
             {recommendedProducts.map(p => (
-              <div key={p.id} style={{ border: '1px solid #e2e8f0', borderRadius: '12px', padding: '20px', textAlign: 'center' }}>
-                {p.imageUrl && <img src={p.imageUrl} alt={p.title} style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px', marginBottom: '10px' }} />}
-                <div style={{ fontSize: '18px', fontWeight: 'bold' }}>{p.title}</div>
-                <div style={{ color: '#dc2626', fontSize: '16px', marginTop: '5px' }}>${p.price}</div>
-                {p.description && <div style={{ color: '#666', fontSize: '14px', marginTop: '10px' }}>{p.description.substring(0, 100)}...</div>}
-              </div>
+              <ProductCard 
+                key={p.id} 
+                product={p} 
+                onSelect={() => setSelectedProduct(p)} 
+                onAdd={onAdd || (() => console.log('Added to cart', p))} 
+              />
             ))}
           </div>
         </div>
@@ -241,6 +244,14 @@ export default function Account({ user, orders = [], onDeleteOrder, onEditProfil
             </div>
           </div>
         </div>
+      )}
+
+      {selectedProduct && (
+        <ProductModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+          onAdd={onAdd || (() => console.log('Added to cart'))}
+        />
       )}
 
     </div>

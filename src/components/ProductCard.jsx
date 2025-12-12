@@ -1,3 +1,4 @@
+// ProductCard.jsx
 import React, { useState } from 'react';
 
 export default function ProductCard({ product, onSelect, onAdd }) {
@@ -10,7 +11,9 @@ export default function ProductCard({ product, onSelect, onAdd }) {
       <img src={product.imageUrl} alt={product.title} className="product-img"/>
 
       <h3>{product.title}</h3>
-      <div className="text-gray">{product.description}</div>
+      <div className="text-gray" style={{ minHeight: '60px', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+        {product.description || ''}
+      </div>
 
       {/* Цена — не трогаю */}
       <div className="price-row">

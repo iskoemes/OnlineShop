@@ -1,3 +1,4 @@
+// ProductModal.jsx
 import React, { useEffect, useState } from 'react';
 
 export default function ProductModal({ product, onClose, onAdd }) {
@@ -33,7 +34,7 @@ export default function ProductModal({ product, onClose, onAdd }) {
 
           <div style={{ flex: 1 }}>
             <h2 className="text-large">{product.title}</h2>
-            <p className="text-gray">{product.description}</p>
+            <p className="text-gray" style={{ wordBreak: 'break-word', whiteSpace: 'normal' }}>{product.description}</p>
 
             <div style={{ marginTop: '15px' }}>
               Цена: <span className="price">${product.price}</span>
@@ -82,7 +83,7 @@ export default function ProductModal({ product, onClose, onAdd }) {
                     style={{
                       width: '32px',
                       height: '32px',
-                      borderRadius: '6px',
+                      borderRadius: '50%',
                       cursor: 'pointer',
                       border: color === c ? '3px solid #444' : '1px solid #ccc',
                       background: c
