@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductCard from './ProductCard';
 
-export default function Catalog({ products, onSelect, category, setCategory, sort, setSort, query, onAdd }) {
+export default function Catalog({ onSearch, products, onSelect, category, setCategory, sort, setSort, query, onAdd }) {
   return (
     <div className="fade-in">
       <div className="flex-between" style={{ marginBottom: '15px' }}>
@@ -17,6 +17,7 @@ export default function Catalog({ products, onSelect, category, setCategory, sor
             <option value="price_asc">Бюджетные</option>
             <option value="price_desc">Дорогие</option>
           </select>
+         <input className="form-input"  placeholder="Поиск" onChange={e => onSearch(e.target.value)} />
         </div>
         <div>Найдено {products.length}</div>
       </div>

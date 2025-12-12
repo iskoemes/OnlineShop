@@ -1,7 +1,6 @@
-// Account.jsx
 import React, { useState } from 'react';
-import ProductCard from './ProductCard'; // Assuming ProductCard is in the same directory or adjust path
-import ProductModal from './ProductModal'; // Assuming ProductModal is in the same directory or adjust path
+import ProductCard from './ProductCard'; 
+import ProductModal from './ProductModal'; 
 
 export default function Account({ user, orders = [], onDeleteOrder, onEditProfile, logout, products = [], onAdd }) {
   const isGuest = user?.uid === 'guest';

@@ -24,9 +24,7 @@ export default function Header({ cartCount, onNavigate, onSearch, user, setUser 
           {/* ДЕСКТОП МЕНЮ */}
           <nav className="nav-desktop flex-gap">
             <button onClick={() => onNavigate('catalog')}>Каталог</button>
-            <button onClick={() => onNavigate('cart')}> <img className='icon' src="basket.svg" alt="" /> ({cartCount})</button>
-            {/* <button onClick={() => onNavigate('account')}>  <img className='icon' src="personalAccount.svg" alt="" /> </button> */}
-            {/* {!isGuest && <button onClick={() => onNavigate('collectHoliday')}>Собрать праздник</button>} */}
+            <button onClick={() => onNavigate('cart')}> <img className='icon' src="basket.svg" alt="корзина" /> ({cartCount})</button>
             {isAdmin && <button onClick={() => onNavigate('admin')}>Админ</button>}
           </nav>
 
@@ -40,12 +38,6 @@ export default function Header({ cartCount, onNavigate, onSearch, user, setUser 
 
         {/* ПРАВАЯ ЧАСТЬ */}
         <div className="right-controls flex-gap">
-          <input placeholder="Поиск" onChange={e => onSearch(e.target.value)} />
-
-          {/* <div className="cart-link" onClick={() => onNavigate('cart')}>
-            Корзина ({cartCount})
-          </div> */}
-
           {/* 🔹 ЕСЛИ ГОСТЬ — показываем Вход / Регистрация */}
          {isGuest ? (
   <AuthButtons

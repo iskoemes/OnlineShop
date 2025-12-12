@@ -1,4 +1,3 @@
-// AdminUsers.jsx
 import React, { useEffect, useState } from "react";
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";

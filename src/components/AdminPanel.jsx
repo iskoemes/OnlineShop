@@ -1,4 +1,3 @@
-// AdminPanel.jsx
 import React, { useState, useRef, useEffect } from 'react';
 import AdminUsers from "./AdminUsers.jsx";
 import OrderModal from "./OrderModal.jsx";

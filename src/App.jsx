@@ -11,7 +11,7 @@ import Account from './components/Account';
 import AdminPanel from './components/AdminPanel';
 import Register from "./components/Register.jsx";
 import Login from "./components/Login.jsx";
-import Footer from './components/Footer';  // Import the new Footer component
+import Footer from './components/Footer'; 
 import { createGood } from '../api/createGood.js';
 
 export default function App() {
@@ -157,6 +157,9 @@ export default function App() {
   setPage("catalog");
 }
 
+const handleSearch = (value) => {
+  setQuery(value);
+};
 
   return (
     <div>
@@ -166,7 +169,8 @@ export default function App() {
           if (p === "cart") setShowCart(true);
           else setPage(p);
         }}
-        onSearch={setQuery}
+      onSearch={handleSearch}
+
         user={user}
         setUser={setUser}
         goToLogin={goToLogin}
@@ -183,6 +187,7 @@ export default function App() {
             setSort={setSort}
             query={query}
             onAdd={addToCart}
+            onSearch={handleSearch}
           />
         )}
         {page === 'checkout' && (
@@ -233,13 +238,9 @@ onAdd={addToCart}
             onBack={() => setPage("catalog")}
           />
         )}
-        {/* {page === 'collectHoliday' && ( 
-          <CollectHoliday 
-            user={user}  
-          />
-        )} */}
+       
       </main>
-      <Footer />  {/* Use the new Footer component */}
+      <Footer />
       <ProductModal product={selected} onClose={() => setSelected(null)} onAdd={addToCart} />
       {showCart && (
         <Cart
